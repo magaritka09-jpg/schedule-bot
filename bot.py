@@ -11,7 +11,7 @@ from openai import OpenAI
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(**name**)
 
-TELEGRAM_TOKEN = os.environ.get(“TELEGRAM_TOKEN”)
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 OPENAI_API_KEY = os.environ.get(“OPENAI_API_KEY”)
 USER_ID = int(os.environ.get(“USER_ID”, “298630213”))
 TIMEZONE = pytz.timezone(“Europe/Istanbul”)
