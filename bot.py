@@ -84,7 +84,8 @@ async def today_command(update, context):
 async def lesson_command(update, context):
     weekday = datetime.now(TIMEZONE).weekday()
     lang = SCHEDULE.get(weekday, {}).get("lang") or "english"
-    await update.message.reply_text("Готовлю урок, секунду...")lesson = await generate_lesson(lang)
+    await update.message.reply_text("Готовлю урок, секунду...")lesson = 
+    await generate_lesson(lang)
     lang_name = "Английский" if lang == "english" else "Турецкий"
     await update.message.reply_text(f"{lang_name} - урок на сегодня\n\n{lesson}")
 
