@@ -10,11 +10,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 USER_ID = int(os.environ.get("USER_ID", "298630213"))
 TIMEZONE = pytz.timezone("Europe/Istanbul")
-
-openai_client = OpenAI(api_key=OPENAI_API_KEY)
 
 SCHEDULE = {
     0: {"morning": "Доброе утро! Понедельник.\n\nСегодня:\n- Душ утром\n- Работа 10:00-19:00\n- 20:00 английский\n- 20:30 упражнения", "lang": "english"},
@@ -34,7 +31,8 @@ LANGUAGE_PROMPTS = {
 
 async def generate_lesson(language):
     try:
-        response = openai_client.chat.completions.create(
+        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+        response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": LANGUAGE_PROMPTS.get(language)}],
             max_tokens=500,
@@ -86,8 +84,7 @@ async def today_command(update, context):
 async def lesson_command(update, context):
     weekday = datetime.now(TIMEZONE).weekday()
     lang = SCHEDULE.get(weekday, {}).get("lang") or "english"
-    await update.message.reply_text("Готовлю урок, секунду...")
-    lesson = await generate_lesson(lang)
+    await update.message.reply_text("Готовлю урок, секунду...")lesson = await generate_lesson(lang)
     lang_name = "Английский" if lang == "english" else "Турецкий"
     await update.message.reply_text(f"{lang_name} - урок на сегодня\n\n{lesson}")
 
